@@ -31,9 +31,15 @@ public class DateMapper {
 
     public OffsetDateTime asOffsetDateTime(Timestamp ts){
         if (ts != null){
-            return OffsetDateTime.of(ts.toLocalDateTime().getYear(), ts.toLocalDateTime().getMonthValue(),
-                    ts.toLocalDateTime().getDayOfMonth(), ts.toLocalDateTime().getHour(), ts.toLocalDateTime().getMinute(),
-                    ts.toLocalDateTime().getSecond(), ts.toLocalDateTime().getNano(), ZoneOffset.UTC);
+            return OffsetDateTime.of(
+                    ts.toLocalDateTime().getYear(),
+                    ts.toLocalDateTime().getMonthValue(),
+                    ts.toLocalDateTime().getDayOfMonth(),
+                    ts.toLocalDateTime().getHour(),
+                    ts.toLocalDateTime().getMinute(),
+                    ts.toLocalDateTime().getSecond(),
+                    ts.toLocalDateTime().getNano(),
+                    ZoneOffset.UTC);
         } else {
             return null;
         }
