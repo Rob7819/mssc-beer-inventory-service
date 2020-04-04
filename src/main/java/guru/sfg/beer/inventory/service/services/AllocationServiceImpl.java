@@ -56,24 +56,20 @@ public class AllocationServiceImpl implements AllocationService {
                 beerOrderLine.setQuantityAllocated(orderQty);
                 beerInventory.setQuantityOnHand(inventory);
 
-                //it's possible for order demands to match the on hand quantity of a record so we need to put in a handle
-                //to ensure we don't end up with records of zero quantities. ****RJB Modification****
-                if(inventory > 0) {
-                    //update record when inventory is still left over (on the current record iterator, beerInventory)
-                    beerInventoryRepository.save(beerInventory);
-                }
-                else{
-                    //dud record prevention!!!
-                    //we do not rely on a single record for any given item so we can delete a record once quantity drops to 0
-                    beerInventoryRepository.delete(beerInventory);
-                }
+                beerInventoryRepository.save(beerInventory);
 
             } else if (inventory > 0) { //partial allocation
                 beerOrderLine.setQuantityAllocated(allocatedQty + inventory);
-                //beerInventory.setQuantityOnHand(0);//????  Is this necessary if we're deleting it???  Does it even work???
+                beerInventory.setQuantityOnHand(0);//set this to zero for easier processing
+
+            }
+            //it's possible for order demands to match the on hand quantity of a record so we need to put in a handle
+            //to ensure we don't end up with records of zero quantities.
+            if(beerInventory.getQuantityOnHand() == 0){
 
                 //we do not rely on a single record for any given item so we can delete a record once quantity drops to 0
                 beerInventoryRepository.delete(beerInventory);
+
             }
         });
 
